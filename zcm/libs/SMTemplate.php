@@ -1,5 +1,5 @@
 <?php
-	require('db.php');
+	// require('db.php');
 	require_once('smarty/Smarty.class.php');
 	require_once('smtemplate_config.php');
 
