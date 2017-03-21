@@ -11,8 +11,8 @@
 <tbody>
 	{foreach $course as $courses}
 	<tr>
-		<td>{$course.title}</td>
-		<td>{$course.category_id}</td>
+		<td>{$courses->getTitle()}</td>
+		<td>{$courses->getCategoryId()}</td>
 	</tr>
 	{/foreach}	
 </tbody>

@@ -10,13 +10,12 @@
 		$courses = array(); //created for the template
 		$sql_courses = "SELECT * from courses";
 		$fetch_courses_pdo = $connection->query($sql_courses, PDO::FETCH_CLASS, 'Courses');
-	    // while ($row = $fetch_courses_pdo->fetchObject('Courses')) {
-		while ($row = $fetch_courses_pdo->fetchAll(PDO::FETCH_CLASS, 'Courses')) {
+	    while ($row = $fetch_courses_pdo->fetchObject('Courses')) {
 	        // printf('%s | %d' . PHP_EOL,
 	        //     $row->getTitle(), $row->getCategoryId());
 	        array_push($courses, $row);
 	        $smarty->assign('course', $courses);
-	        var_dump($row);
+	        // var_dump($row);
 	    }
 	    echo '<br/>';
 	} catch(PDOException $e) {
