@@ -1,106 +1,29 @@
 <?php
-
+	require_once 'Courses.class.php';
+	require_once 'db.php';
 	require_once 'libs/SMTemplate.php';
+	
 	$courses = new SMTemplate();
 	$smarty = $courses->get_smarty();
-	$smarty->display('courses.tpl');
-	// Course
-	// 	id
-	// 	title
-	// 	description
-	// 	category
-	// 	fee
-	// 	created_at
-	// 	updated_at
-	class Courses {
-		protected $id;
-		protected $title;
-		protected $description;
-		protected $category;
-		protected $fee;
-		protected $created_at;
-		protected $updated_at;
 
-		public function getId()
-	    {
-	        return $this->id;
+	try {
+		$courses = array(); //created for the template
+		$sql_courses = "SELECT * from courses";
+		$fetch_courses_pdo = $connection->query($sql_courses, PDO::FETCH_CLASS, 'Courses');
+	    // while ($row = $fetch_courses_pdo->fetchObject('Courses')) {
+		while ($row = $fetch_courses_pdo->fetchAll(PDO::FETCH_CLASS, 'Courses')) {
+	        // printf('%s | %d' . PHP_EOL,
+	        //     $row->getTitle(), $row->getCategoryId());
+	        array_push($courses, $row);
+	        $smarty->assign('course', $courses);
+	        var_dump($row);
 	    }
-
-	    public function setId($id)
-	    {
-	        $this->id = $id;
-	    }
-
-	    public function getTitle()
-	    {
-	        return $this->title;
-	    }
-
-	    public function setTitle($title)
-	    {
-	        $this->title = $title;
-	    }
-
-	    public function getDescription()
-	    {
-	        return $this->description;
-	    }
-
-	    public function setDescription($description)
-	    {
-	        $this->description = $description;
-	    }
-
-	    public function getCategory()
-	    {
-	        return $this->category;
-	    }
-
-	    public function setCategory($category)
-	    {
-	        $this->category = $category;
-	    }
-
-	    public function getFee()
-	    {
-	    	return $this->fee;
-	    }
-
-	    public function setFee($fee) 
-	    {
-	    	$this->fee = $fee;
-	    }
-
-	    public function getCreatedAt()
-	    {
-	    	return $this->created_at;
-	    }
-
-	    public function setCreatedAt($created_at)
-	    {
-	    	$this->created_at = $created_at;
-	    }
-
-	    public function getUpdatedAt()
-	    {
-	    	return $this->updated_at;
-	    }
-
-	    public function setUpdatedAt($updated_at)
-	    {
-	    	$this->updated_at = $updated_at;
-	    }
-
-	    function __construct($id, $title, $description, $category, $fee, $created_at, $updated_at)
-	    {
-	        $this->id = $id;
-	        $this->title = $title;
-	        $this->description = $description;
-	        $this->category = $category;
-	        $this->fee = $fee;
-	        $this->created_at = $created_at;
-	        $this->updated_at = $updated_at;
-	        echo 'Courses constructor called';
-	    }
+	    echo '<br/>';
+	} catch(PDOException $e) {
+		echo "Error!: " . $e->getMessage() . "<br/>";
+	} finally {
+		$connection=null;
 	}
+
+	$smarty->display('courses.tpl');
 ?>
